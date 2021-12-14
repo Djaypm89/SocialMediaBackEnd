@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const postSchema = new mongoose.Schema({
-    userId: {type: Number, required: true},
+    userId: {type: String, required: true},
     postBody: {type: String, required: true},
     like: {type: Number, default: 0}
 })
@@ -11,7 +11,7 @@ const Post = mongoose.model('Post', postSchema);
 
 function validatePost(Post){
     const schema = Joi.object({
-        userId: Joi.number().required(),
+        userId: Joi.string().required(),
         postBody: Joi.string().required(),
         like: Joi.number()
     });
