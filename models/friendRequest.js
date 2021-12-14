@@ -16,10 +16,6 @@ const friendRequestSchema = mongoose.Schema({
         enum: ["PENDING", "ACCEPTED", "REJECTED"],
         default: "PENDING",
     },
-    isOwner: {
-        type: Boolean,
-        default: false
-    },
 });
 
 const FriendRequest = mongoose.model("FriendRequest", friendRequestSchema);
