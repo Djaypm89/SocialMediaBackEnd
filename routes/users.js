@@ -8,7 +8,7 @@ const express = require("express");
 const router = express.Router();
 
 //* POST register a new user
-router.post("/register", async (req, res) => {
+router.post("/user/register", async (req, res) => {
   try {
     const { error } = validateUser(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -42,7 +42,7 @@ router.post("/register", async (req, res) => {
 });
 //* POST a valid login attempt
 //! when a user logs in, a new JWT token is generated and sent if their email/password credentials are correct
-router.post("/login", async (req, res) => {
+router.post("/user/login", async (req, res) => {
   try {
     const { error } = validateLogin(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
 });
 
 //* Get all users
-router.get("/", async (req, res) => {
+router.get("/user", async (req, res) => {
   try {
     const users = await User.find();
     return res.send(users);
@@ -74,8 +74,31 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.put("/user/:id", async (req, res) => {
+  try{
+    const user = await User.findByIdAndUpdate(
+      {
+        _id: req.params.id
+      },
+      {
+        src: req.body.src
+      },
+      {
+        new: true
+      }
+    );
+
+    await user.save();
+
+    return res.send(user);
+    
+  }catch(error){
+    console.log("Couldn't Update Photo");
+  }
+});
+
 //* DELETE a single user from the database
-router.delete("/:userId", [auth, admin], async (req, res) => {
+router.delete("/user/:userId", [auth, admin], async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user)
