@@ -17,6 +17,7 @@ const userSchema = mongoose.Schema({
   isAdmin: { type: Boolean, required: true },
   src: { type: String },
   friends: { type: mongoose.Schema.Types.Array, ref:"FriendRequest", default: []},
+  bio: { type: String, default: "About Me..."}
 });
 
 userSchema.methods.generateAuthToken = function () {

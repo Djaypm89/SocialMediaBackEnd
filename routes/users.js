@@ -5,6 +5,7 @@ const admin = require("../middleware/admin");
 
 const bcrypt = require("bcrypt");
 const express = require("express");
+const res = require("express/lib/response");
 const router = express.Router();
 
 //* POST register a new user
@@ -75,7 +76,28 @@ router.get("/user", async (req, res) => {
   }
 });
 
-router.put("/user/:id", async (req, res) => {
+//GET User's Info
+router.get("/user/info/:userId", async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.userId});
+    if(!user){
+      return res
+        .status(400)
+        .send(`User doesn't exist!`);
+    }else{
+      const userInfo = {
+        src: user.src,
+        bio: user.bio
+      }
+      return res.send(userInfo);
+    }
+  } catch (error) {
+    return res.status(500).send(`Internal Server Error: ${ex}`);
+  }
+});
+
+//Update User's Photo
+router.put("/user/photo/:id", async (req, res) => {
   try{
     const user = await User.findByIdAndUpdate(
       {
@@ -95,6 +117,29 @@ router.put("/user/:id", async (req, res) => {
     
   }catch(error){
     console.log("Couldn't Update Photo");
+  }
+});
+
+//Update User's Bio
+router.put("/user/bio/:id", async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      {
+        _id: req.params.id
+      },
+      {
+        bio: req.body.bio
+      },
+      {
+        new: true
+      }
+    );
+
+    await user.save();
+
+    return res.send(user);
+  } catch (error) {
+    
   }
 });
 
