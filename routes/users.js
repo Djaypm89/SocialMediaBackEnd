@@ -92,7 +92,7 @@ router.get("/user/info/:userId", async (req, res) => {
       return res.send(userInfo);
     }
   } catch (error) {
-    return res.status(500).send(`Internal Server Error: ${ex}`);
+    return res.status(500).send(`Internal Server Error: ${error}`);
   }
 });
 
