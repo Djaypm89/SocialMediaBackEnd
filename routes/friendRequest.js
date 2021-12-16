@@ -87,18 +87,28 @@ router.put("/users/request/recieved/:requestID", [auth], async (req, res) => {
     try {
         const user = await User.findOne({ _id: req.user._id})
         const request = await FriendRequest.findOneAndUpdate(
-        req.params.requestID,
-        {
-            requestor: req.body.requestor,
-            requestee: req.body.requestee,
-            status: req.body.status,
-        },
-        { new: true}
-    );
-        if (request.status == "ACCEPTED")
-            user.friends.push(request.requestor)
-            await user.save()
+            req.params.requestID,
+            {
+                requestor: req.body.requestor,
+                requestee: req.body.requestee,
+                status: req.body.status,
+            },
+            { new: true}
+            );
+        const requestor = await User.findOne({_id: request.requestor})
 
+        if (user.friends.includes(request.requestor)) {
+            return res
+            .status(400)
+            .send("You are already friends.");
+        }
+        
+        if (request.status == "ACCEPTED"){
+            user.friends.push(request.requestor) 
+            & requestor.friends.push(request.requestee)
+            await user.save() & requestor.save()
+        }
+        
         await request.save()
         return res.send(request);
     } catch (ex) {

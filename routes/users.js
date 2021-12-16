@@ -66,11 +66,11 @@ router.post("/user/login", async (req, res) => {
   }
 });
 
-//* Get all users
-router.get("/user", async (req, res) => {
+//* Get logged in user
+router.get("/user/:userId", async (req, res) => {
   try {
-    const users = await User.find();
-    return res.send(users);
+    const user = await User.findOne({_id: req.params.userId});
+    return res.send(user);
   } catch (ex) {
     return res.status(500).send(`Internal Server Error: ${ex}`);
   }
