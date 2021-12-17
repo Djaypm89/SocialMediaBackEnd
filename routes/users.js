@@ -96,6 +96,16 @@ router.get("/user/info/:userId", async (req, res) => {
   }
 });
 
+//GET All User's
+router.get("/user", async (req, res) => {
+  try {
+    const users = await User.find();
+    return res.send(users);
+  } catch (error) {
+    return res.status(500).send(`Internal Server Error: ${ex}`);
+  }
+});
+
 //Update User's Photo
 router.put("/user/photo/:id", async (req, res) => {
   try{
