@@ -4,7 +4,8 @@ const Joi = require("joi");
 const postSchema = new mongoose.Schema({
     userId: {type: String, required: true},
     postBody: {type: String, required: true},
-    like: {type: Number, default: 0}
+    like: {type: Number, default: 0},
+    timeStamp: {type: Number}
 })
 
 const Post = mongoose.model('Post', postSchema);
