@@ -29,8 +29,9 @@ router.post("/post", async (req, res) => {
 
         const post = new Post({
             userId: req.body.userId,
+            name: req.body.name,
             postBody: req.body.postBody,
-            timeStamp: Date.now()
+            timeStamp: req.body.timeStamp
         });
 
         await post.save();
