@@ -39,10 +39,10 @@ router.post("/users/request/:userId", [auth], async (req, res) => {
     }
 });
 
-//* GET request by requestee userID
+//* GET request by requestee id
 router.get("/users/request/recieved", [auth], async (req, res) =>{
     try{
-        const requests = await FriendRequest.findOne( {requestee: req.user._id});
+        const requests = await FriendRequest.find( {requestee: req.user._id});
         if (!requests)
             return res
             .status(400)
@@ -56,7 +56,7 @@ router.get("/users/request/recieved", [auth], async (req, res) =>{
 //* GETALL requests by requestor userID
 router.get("/users/request/sent", [auth], async (req, res) =>{
     try{
-        const requests = await FriendRequest.findOne( {requestor: req.user._id});
+        const requests = await FriendRequest.find( {requestor: req.user._id});
         if (!requests)
             return res
             .status(400)
